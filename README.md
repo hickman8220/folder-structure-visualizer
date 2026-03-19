@@ -33,6 +33,9 @@ Instead of manually creating dozens of folders and files when starting a project
 - **🖱 Drag & Drop Input**
   Drop ASCII trees directly into the editor.
 
+- **Supports both standard ASCII trees (├──, └──, │) and indentation-based structures.**
+  Indentation is only valid under folders (lines ending with /).
+
 ---
 
 ## 🖼 Preview
