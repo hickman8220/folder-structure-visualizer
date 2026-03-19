@@ -1,0 +1,53 @@
+function ScaffoldOptions({ options, onToggle }) {
+  return (
+    <div className="scaffold-options-card">
+      <div className="section-head">
+        <div>
+          <h2>Scaffold Presets</h2>
+          <p>Merge ready-made starter files into the parsed structure</p>
+        </div>
+      </div>
+
+      <div className="scaffold-options-list">
+        <label className="scaffold-option">
+          <input
+            type="checkbox"
+            checked={options.reactVite}
+            onChange={() => onToggle("reactVite")}
+          />
+          <span>Generate React + Vite app</span>
+        </label>
+
+        <label className="scaffold-option">
+          <input
+            type="checkbox"
+            checked={options.expressBackend}
+            onChange={() => onToggle("expressBackend")}
+          />
+          <span>Generate Node + Express API</span>
+        </label>
+
+        <label className="scaffold-option">
+          <input
+            type="checkbox"
+            checked={options.tailwind}
+            disabled={!options.reactVite}
+            onChange={() => onToggle("tailwind")}
+          />
+          <span>Add Tailwind CSS config</span>
+        </label>
+
+        <label className="scaffold-option">
+          <input
+            type="checkbox"
+            checked={options.gitignore}
+            onChange={() => onToggle("gitignore")}
+          />
+          <span>Add root .gitignore</span>
+        </label>
+      </div>
+    </div>
+  );
+}
+
+export default ScaffoldOptions;

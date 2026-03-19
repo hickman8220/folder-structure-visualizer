@@ -6,6 +6,14 @@ function shouldIgnoreFolder(name) {
   return IGNORE_FOLDERS.includes(name);
 }
 
+function getFileContent(node) {
+  if (typeof node.content === "string") {
+    return node.content;
+  }
+
+  return "";
+}
+
 function addNodesToZip(zipFolder, nodes) {
   for (const node of nodes) {
     if (node.type === "folder") {
@@ -17,7 +25,7 @@ function addNodesToZip(zipFolder, nodes) {
         addNodesToZip(childFolder, node.children || []);
       }
     } else {
-      zipFolder.file(node.name, "");
+      zipFolder.file(node.name, getFileContent(node));
     }
   }
 }
@@ -48,7 +56,7 @@ export async function downloadTreeAsZip(treeData) {
           addNodesToZip(folder, node.children || []);
         }
       } else {
-        zip.file(node.name, "");
+        zip.file(node.name, getFileContent(node));
       }
     }
   }

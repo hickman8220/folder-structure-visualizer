@@ -4,8 +4,10 @@ import TreeView from "./components/TreeView";
 import PathBar from "./components/PathBar";
 import Toolbar from "./components/Toolbar";
 import Toast from "./components/Toast";
+import ScaffoldOptions from "./components/ScaffoldOptions";
 import { downloadTreeAsZip } from "./utils/exportZip";
 import { countTreeStats, treeToMarkdown } from "./utils/treeHelpers";
+import { applyScaffoldPresets } from "./utils/applyScaffoldPresets";
 import "./App.css";
 
 function collectFolderPaths(nodes, parentPath = "") {
@@ -26,11 +28,22 @@ function collectFolderPaths(nodes, parentPath = "") {
 }
 
 function App() {
-  const [treeData, setTreeData] = useState([]);
+  const [rawTreeData, setRawTreeData] = useState([]);
   const [selectedPath, setSelectedPath] = useState("");
   const [expandedPaths, setExpandedPaths] = useState(new Set());
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+
+  const [scaffoldOptions, setScaffoldOptions] = useState({
+    reactVite: false,
+    expressBackend: false,
+    tailwind: false,
+    gitignore: false,
+  });
+
+  const treeData = useMemo(() => {
+    return applyScaffoldPresets(rawTreeData, scaffoldOptions);
+  }, [rawTreeData, scaffoldOptions]);
 
   const stats = useMemo(() => countTreeStats(treeData), [treeData]);
 
@@ -38,6 +51,36 @@ function App() {
     const allFolderPaths = collectFolderPaths(treeData);
     setExpandedPaths(new Set(allFolderPaths));
   }, [treeData]);
+
+  useEffect(() => {
+    if (!treeData.length) {
+      setSelectedPath("");
+      return;
+    }
+
+    const selectedStillExists = (() => {
+      const walk = (nodes, parentPath = "") => {
+        for (const node of nodes) {
+          const currentPath = parentPath
+            ? `${parentPath}/${node.name}`
+            : node.name;
+
+          if (currentPath === selectedPath) return true;
+
+          if (node.type === "folder" && node.children?.length) {
+            if (walk(node.children, currentPath)) return true;
+          }
+        }
+        return false;
+      };
+
+      return walk(treeData);
+    })();
+
+    if (!selectedStillExists) {
+      setSelectedPath("");
+    }
+  }, [treeData, selectedPath]);
 
   const triggerToast = (message) => {
     setToastMessage(message);
@@ -56,6 +99,25 @@ function App() {
         next.delete(path);
       } else {
         next.add(path);
+      }
+
+      return next;
+    });
+  };
+
+  const handleOptionChange = (key) => {
+    setScaffoldOptions((prev) => {
+      const next = {
+        ...prev,
+        [key]: !prev[key],
+      };
+
+      if (key === "reactVite" && prev.reactVite) {
+        next.tailwind = false;
+      }
+
+      if (key === "tailwind" && !prev.reactVite) {
+        return prev;
       }
 
       return next;
@@ -109,7 +171,11 @@ function App() {
 
       <main className="main-layout">
         <section className="panel input-panel">
-          <InputPanel setTreeData={setTreeData} />
+          <InputPanel setTreeData={setRawTreeData} />
+          <ScaffoldOptions
+            options={scaffoldOptions}
+            onToggle={handleOptionChange}
+          />
         </section>
 
         <section className="panel tree-panel">
