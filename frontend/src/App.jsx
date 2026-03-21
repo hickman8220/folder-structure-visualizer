@@ -38,6 +38,7 @@ function App() {
     reactVite: false,
     expressBackend: false,
     tailwind: false,
+    typescript: false,
     gitignore: false,
   });
 

@@ -593,3 +593,289 @@
 .scaffold-option span {
   line-height: 1.4;
 }
+
+/* Mobile-only compatibility patch */
+@media (max-width: 900px) {
+  .app-shell {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: auto;
+  }
+
+  .main-layout {
+    grid-template-columns: 1fr;
+    padding: 14px;
+    gap: 14px;
+    overflow: visible;
+  }
+
+  .input-panel,
+  .tree-panel {
+    padding: 16px;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .input-wrap,
+  .tree-wrap,
+  .drop-zone {
+    height: auto;
+    min-height: auto;
+    flex: none;
+  }
+
+  .structure-textarea {
+    min-height: 180px;
+    height: 180px;
+    max-height: none;
+  }
+
+  .tree-scroll-area {
+    max-height: 420px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 4px;
+  }
+
+  .pathbar {
+    position: static;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .pathbar-copy {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pathbar-center {
+    white-space: normal;
+    word-break: break-word;
+    overflow: visible;
+    text-overflow: unset;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-header {
+    padding: 18px 16px 14px;
+  }
+
+  .app-header h1 {
+    font-size: 24px;
+    line-height: 1.15;
+  }
+
+  .app-subtitle {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .toolbar {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .toolbar-left,
+  .toolbar-right {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .toolbar-right {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-action {
+    flex: 1 1 calc(50% - 8px);
+    justify-content: center;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .toolbar-badge,
+  .toolbar-chip {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+
+  .input-panel,
+  .tree-panel {
+    padding: 14px;
+  }
+
+  .section-head h2 {
+    font-size: 16px;
+  }
+
+  .section-head p {
+    font-size: 12px;
+  }
+
+  .drop-zone-hint {
+    top: 10px;
+    right: 12px;
+    font-size: 11px;
+  }
+
+  .structure-textarea {
+    min-height: 170px;
+    height: 170px;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 14px;
+    padding-top: 38px;
+  }
+
+  .action-row {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .ghost-btn {
+    width: 100%;
+    padding: 11px 14px;
+  }
+
+  .scaffold-options-card {
+    margin-top: 14px;
+    padding: 14px;
+  }
+
+  .scaffold-options-list {
+    gap: 10px;
+  }
+
+  .scaffold-option {
+    align-items: flex-start;
+    font-size: 0.92rem;
+  }
+
+  .tree-row {
+    min-height: 38px;
+    gap: 8px;
+  }
+
+  .tree-label {
+    font-size: 14px;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 86px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-kicker {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .app-header h1 {
+    font-size: 22px;
+  }
+
+  .app-subtitle {
+    font-size: 13px;
+  }
+
+  .main-layout {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .panel {
+    border-radius: 16px;
+  }
+
+  .input-panel,
+  .tree-panel {
+    padding: 12px;
+  }
+
+  .toolbar-action {
+    flex: 1 1 100%;
+  }
+
+  .structure-textarea {
+    min-height: 160px;
+    height: 160px;
+    font-size: 12.5px;
+  }
+
+  .tree-label {
+    font-size: 13px;
+  }
+
+  .pathbar-center {
+    font-size: 12px;
+  }
+
+  .tree-scroll-area {
+    max-height: 360px;
+  }
+}
+
+/* Optional thin scrollbar on mobile */
+@media (max-width: 900px) {
+  .structure-textarea::-webkit-scrollbar,
+  .main-layout::-webkit-scrollbar,
+  .tree-scroll-area::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .structure-textarea::-webkit-scrollbar-thumb,
+  .main-layout::-webkit-scrollbar-thumb,
+  .tree-scroll-area::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 10px;
+  }
+}
+
+/* FINAL mobile scroll fix */
+@media (max-width: 900px) {
+  .app-shell {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .main-layout {
+    flex: none;
+    min-height: auto;
+    overflow: visible;
+    padding-bottom: 16px;
+  }
+
+  .input-wrap,
+  .tree-wrap {
+    height: auto;
+    min-height: auto;
+  }
+
+  .tree-panel {
+    margin-bottom: 14px;
+  }
+
+  .pathbar {
+    position: static;
+    margin-top: 0;
+  }
+}

@@ -21,6 +21,16 @@ function ScaffoldOptions({ options, onToggle }) {
         <label className="scaffold-option">
           <input
             type="checkbox"
+            checked={options.typescript}
+            disabled={!options.reactVite}
+            onChange={() => onToggle("typescript")}
+          />
+          <span>Use TypeScript (TSX)</span>
+        </label>
+
+        <label className="scaffold-option">
+          <input
+            type="checkbox"
             checked={options.expressBackend}
             onChange={() => onToggle("expressBackend")}
           />
