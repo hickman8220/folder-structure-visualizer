@@ -42,9 +42,15 @@ function App() {
     gitignore: false,
   });
 
+  const [placementConfig, setPlacementConfig] = useState({
+    mode: "root",
+    targetFolder: "",
+    parentPath: "",
+  });
+
   const treeData = useMemo(() => {
-    return applyScaffoldPresets(rawTreeData, scaffoldOptions);
-  }, [rawTreeData, scaffoldOptions]);
+    return applyScaffoldPresets(rawTreeData, scaffoldOptions, placementConfig);
+  }, [rawTreeData, scaffoldOptions, placementConfig]);
 
   const stats = useMemo(() => countTreeStats(treeData), [treeData]);
 
@@ -83,6 +89,19 @@ function App() {
     }
   }, [treeData, selectedPath]);
 
+  useEffect(() => {
+    const appScaffoldsEnabled =
+      scaffoldOptions.reactVite || scaffoldOptions.expressBackend;
+
+    if (!appScaffoldsEnabled) {
+      setPlacementConfig({
+        mode: "root",
+        targetFolder: "",
+        parentPath: "",
+      });
+    }
+  }, [scaffoldOptions.reactVite, scaffoldOptions.expressBackend]);
+
   const triggerToast = (message) => {
     setToastMessage(message);
     setShowToast(true);
@@ -115,14 +134,26 @@ function App() {
 
       if (key === "reactVite" && prev.reactVite) {
         next.tailwind = false;
+        next.typescript = false;
       }
 
       if (key === "tailwind" && !prev.reactVite) {
         return prev;
       }
 
+      if (key === "typescript" && !prev.reactVite) {
+        return prev;
+      }
+
       return next;
     });
+  };
+
+  const handlePlacementChange = (updates) => {
+    setPlacementConfig((prev) => ({
+      ...prev,
+      ...updates,
+    }));
   };
 
   const expandAll = () => {
@@ -173,9 +204,12 @@ function App() {
       <main className="main-layout">
         <section className="panel input-panel">
           <InputPanel setTreeData={setRawTreeData} />
+
           <ScaffoldOptions
             options={scaffoldOptions}
             onToggle={handleOptionChange}
+            placementConfig={placementConfig}
+            onPlacementChange={handlePlacementChange}
           />
         </section>
 

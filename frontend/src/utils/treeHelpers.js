@@ -1,3 +1,11 @@
+export function cloneTree(nodes = []) {
+  return nodes.map((node) => ({
+    ...node,
+    children:
+      node.type === "folder" ? cloneTree(node.children || []) : undefined,
+  }));
+}
+
 export function countTreeStats(nodes) {
   let folders = 0;
   let files = 0;
@@ -32,4 +40,86 @@ export function treeToMarkdown(nodes, depth = 0) {
   }
 
   return lines.filter(Boolean).join("\n");
+}
+
+export function sanitizePathSegment(segment = "") {
+  return segment.trim().replace(/^\/+|\/+$/g, "");
+}
+
+export function splitPath(path = "") {
+  return path
+    .split("/")
+    .map((segment) => sanitizePathSegment(segment))
+    .filter(Boolean);
+}
+
+export function normalizePlacementPath(config = {}) {
+  if (!config || config.mode !== "specific") {
+    return [];
+  }
+
+  const targetFolder = sanitizePathSegment(config.targetFolder || "");
+  if (!targetFolder) {
+    return null;
+  }
+
+  const parentSegments = splitPath(config.parentPath || "");
+  return [...parentSegments, targetFolder];
+}
+
+export function findFolderByPath(nodes = [], pathSegments = []) {
+  if (!pathSegments.length) {
+    return null;
+  }
+
+  let currentChildren = nodes;
+  let currentNode = null;
+
+  for (const segment of pathSegments) {
+    const nextNode = currentChildren.find(
+      (node) => node.type === "folder" && node.name === segment,
+    );
+
+    if (!nextNode) {
+      return null;
+    }
+
+    currentNode = nextNode;
+    currentChildren = nextNode.children || [];
+  }
+
+  return currentNode;
+}
+
+export function ensureFolderPath(nodes = [], pathSegments = []) {
+  if (!pathSegments.length) {
+    return null;
+  }
+
+  let currentChildren = nodes;
+  let currentNode = null;
+
+  for (const segment of pathSegments) {
+    let nextNode = currentChildren.find(
+      (node) => node.type === "folder" && node.name === segment,
+    );
+
+    if (!nextNode) {
+      nextNode = {
+        name: segment,
+        type: "folder",
+        children: [],
+      };
+      currentChildren.push(nextNode);
+    }
+
+    if (!Array.isArray(nextNode.children)) {
+      nextNode.children = [];
+    }
+
+    currentNode = nextNode;
+    currentChildren = nextNode.children;
+  }
+
+  return currentNode;
 }

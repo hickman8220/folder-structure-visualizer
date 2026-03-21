@@ -1,4 +1,13 @@
-function ScaffoldOptions({ options, onToggle }) {
+import AppPlacementForm from "./AppPlacementForm";
+
+function ScaffoldOptions({
+  options,
+  onToggle,
+  placementConfig,
+  onPlacementChange,
+}) {
+  const showPlacementForm = options.reactVite || options.expressBackend;
+
   return (
     <div className="scaffold-options-card">
       <div className="section-head">
@@ -56,6 +65,13 @@ function ScaffoldOptions({ options, onToggle }) {
           <span>Add root .gitignore</span>
         </label>
       </div>
+
+      {showPlacementForm ? (
+        <AppPlacementForm
+          placementConfig={placementConfig}
+          onPlacementChange={onPlacementChange}
+        />
+      ) : null}
     </div>
   );
 }
