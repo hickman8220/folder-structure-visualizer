@@ -13,9 +13,19 @@ Instead of manually creating dozens of folders and files when starting a project
 
 - **🌳 Collapsible Folder Explorer**
   Expand or collapse folders like a real file explorer.
+  - **🔍 Smart Search & Highlight**
+    Instantly search files and folders by name.
+  - Highlights matching text in real-time
+  - Automatically expands relevant folders
+  - Filters out non-matching branches for clarity
 
 - **📊 File & Folder Counters**
   Automatically counts total files and directories.
+  - **🎨 Intelligent File Icons**
+    Automatically assigns icons based on file types and names.
+  - Supports multiple languages (JS, TS, Python, Java, C/C++, etc.)
+  - Recognizes config files (`package.json`, `.env`, `vite.config`)
+  - Enhances readability like a real IDE file explorer
 
 - **📋 Copy Path**
   Click any file or folder and copy its full path.
@@ -53,6 +63,11 @@ Instead of manually creating dozens of folders and files when starting a project
 - **🧠 Flexible Parsing**
   Supports both standard ASCII trees (├──, └──, │) and indentation-based structures.
   Indentation is only valid under folders (lines ending with /).
+
+- **✨ Smooth UI Interactions**
+  - Animated folder expand/collapse
+  - Rotating chevrons for visual feedback
+  - Subtle hover and click effects for better UX
 
 ---
 
@@ -104,7 +119,7 @@ The scaffold system can optionally generate starter files for:
 - **Node + Express API**
 - **Root `.gitignore`**
 
-## These presets are merged into the parsed folder tree and exported as part of the ZIP.
+These presets are merged into the parsed folder tree and exported as part of the ZIP.
 
 ---
 
@@ -145,6 +160,21 @@ When Tailwind is enabled, the scaffold also includes:
 
 - `tailwind.config.js`
 - `postcss.config.js`
+
+  ### Styling Behavior
+
+The scaffold intelligently adapts styling based on selected options:
+
+- **With Tailwind CSS enabled**
+  - Uses utility-first styling
+  - Does NOT generate `App.css`
+  - Includes Tailwind config and directives in `index.css`
+
+- **Without Tailwind**
+  - Generates a standard `App.css`
+  - Uses traditional CSS styling
+
+This ensures clean, minimal, and relevant project output without unused files.
 
 ### Vite 8 Compatibility Note
 
@@ -200,6 +230,29 @@ http://localhost:5173
    - exported as a ZIP scaffold (ignoring build artifacts)
 
 ---
+
+## ⚡ Performance Considerations
+
+The application is optimized for responsiveness and smooth interaction:
+
+- Efficient tree rendering using recursive components
+- Search operates with lightweight string matching (`includes`)
+- Only relevant branches are displayed during filtering
+- Minimal DOM updates ensure good performance even on mobile devices
+
+For extremely large folder trees, performance remains stable due to controlled rendering and state management.
+
+---
+
+---
+
+## 🏆 Highlights
+
+- Built a recursive tree rendering system from scratch
+- Designed a dynamic scaffold generator with conditional file creation
+- Implemented intelligent file-type recognition and icon mapping
+- Created a responsive and animated file explorer UI
+- Developed a real-world developer utility tool with practical use cases
 
 ## 🎯 Use Cases
 
