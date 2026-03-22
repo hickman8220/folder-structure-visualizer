@@ -34,7 +34,7 @@ function ScaffoldOptions({
             disabled={!options.reactVite}
             onChange={() => onToggle("typescript")}
           />
-          <span>Use TypeScript (TSX)</span>
+          <span>Use TypeScript (TSX + TS)</span>
         </label>
 
         <label className="scaffold-option">

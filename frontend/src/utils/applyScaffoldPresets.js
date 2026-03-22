@@ -1,3 +1,4 @@
+import { mergeTrees } from "./mergeTrees";
 function cloneTree(nodes) {
   return nodes.map((node) => ({
     ...node,
@@ -856,7 +857,120 @@ export default {
   };
 }
 
-function createExpressPreset(withFrontendConnection = false) {
+function createExpressPreset(
+  withFrontendConnection = false,
+  withTypeScript = false,
+) {
+  if (withTypeScript) {
+    return {
+      name: "backend",
+      type: "folder",
+      children: [
+        {
+          name: "package.json",
+          type: "file",
+          content: JSON.stringify(
+            {
+              name: "backend",
+              version: "1.0.0",
+              private: true,
+              type: "module",
+              main: "src/server.ts",
+              scripts: {
+                dev: "tsx watch src/server.ts",
+                start: "tsx src/server.ts",
+                typecheck: "tsc --noEmit",
+              },
+              dependencies: {
+                express: "^4.21.0",
+                ...(withFrontendConnection ? { cors: "^2.8.5" } : {}),
+              },
+              devDependencies: {
+                typescript: "^5.6.3",
+                tsx: "^4.19.1",
+                "@types/node": "^22.7.4",
+                "@types/express": "^5.0.0",
+                ...(withFrontendConnection ? { "@types/cors": "^2.8.17" } : {}),
+              },
+            },
+            null,
+            2,
+          ),
+        },
+        {
+          name: "tsconfig.json",
+          type: "file",
+          content: `{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": ["src"]
+}`,
+        },
+        {
+          name: "src",
+          type: "folder",
+          children: [
+            {
+              name: "app.ts",
+              type: "file",
+              content: withFrontendConnection
+                ? `import express, { type Express } from "express";
+import cors from "cors";
+
+const app: Express = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/api/status", (_req, res) => {
+  res.json({
+    ok: true,
+    message: "Frontend and backend are connected successfully.",
+  });
+});
+
+export default app;`
+                : `import express, { type Express } from "express";
+
+const app: Express = express();
+
+app.use(express.json());
+
+app.get("/", (_req, res) => {
+  res.send("Backend API is running");
+});
+
+export default app;`,
+            },
+            {
+              name: "server.ts",
+              type: "file",
+              content: `import app from "./app.ts";
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(\`Server running on port \${PORT}\`);
+});`,
+            },
+          ],
+        },
+      ],
+    };
+  }
+
   return {
     name: "backend",
     type: "folder",
@@ -868,6 +982,7 @@ function createExpressPreset(withFrontendConnection = false) {
           {
             name: "backend",
             version: "1.0.0",
+            private: true,
             main: "src/server.js",
             scripts: {
               dev: "node src/server.js",
@@ -913,6 +1028,8 @@ app.listen(PORT, () => {
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Backend API is running");
@@ -1035,9 +1152,10 @@ export function applyScaffoldPresets(
 
   const withBackendConnection = options.reactVite && options.expressBackend;
 
+  const presetNodes = [];
+
   if (options.reactVite) {
-    pushIfMissing(
-      targetParent,
+    presetNodes.push(
       createReactVitePreset(
         options.tailwind,
         options.typescript,
@@ -1047,7 +1165,17 @@ export function applyScaffoldPresets(
   }
 
   if (options.expressBackend) {
-    pushIfMissing(targetParent, createExpressPreset(withBackendConnection));
+    presetNodes.push(
+      createExpressPreset(withBackendConnection, options.typescript),
+    );
+  }
+
+  if (!targetParent.children) {
+    targetParent.children = [];
+  }
+
+  if (presetNodes.length > 0) {
+    targetParent.children = mergeTrees(targetParent.children, presetNodes);
   }
 
   if (options.gitignore) {
