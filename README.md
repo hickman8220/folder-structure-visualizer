@@ -4,9 +4,6 @@
   <a href="https://foldervisualiser.farhaankhan.dev/" target="_blank">
     <img src="https://img.shields.io/badge/Live%20Demo-Open%20App-6366f1?style=for-the-badge&logo=vercel&logoColor=white"/>
   </a>
-  <a href="https://github.com/Far-200/folder-structure-visualizer" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-Repository-111827?style=for-the-badge&logo=github&logoColor=white"/>
-  </a>
 </p>
 
 **Folder Structure Visualizer** is a developer tool that converts ASCII folder trees into an interactive visual explorer and allows exporting the structure as a downloadable scaffold ZIP.
