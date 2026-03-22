@@ -73,9 +73,47 @@ Instead of manually creating dozens of folders and files when starting a project
 
 ## 🖼 Preview
 
+### 🧩 Full Interface
+
 <p align="center">
-  <img src="./preview.png" width="900"/>
+  <img src="./assets/preview.png" width="900"/>
 </p>
+
+---
+
+### 🔍 Smart Search & Highlight
+
+<p align="center">
+  <img src="./assets/search_feature.png" width="900"/>
+  <br/>
+  <img src="./assets/search_feature_2.png" width="900"/>
+</p>
+
+- Real-time search filtering
+- Auto-expands matching folders
+- Highlights matched text for quick scanning
+
+---
+
+### 🧠 Scaffold Presets & Placement
+
+<p align="center">
+  <img src="./assets/scaffold_presets.png" width="900"/>
+</p>
+
+- Generate React, TSX, Tailwind, and Express setups
+- Choose custom folder placement dynamically
+
+---
+
+### 📂 Example Usage
+
+<p align="center">
+  <img src="./assets/example_use.png" width="900"/>
+</p>
+
+- Paste ASCII tree → instantly visualize structure
+- Explore like a real file system
 
 ### Input
 
