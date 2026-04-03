@@ -6,15 +6,13 @@
   </a>
 </p>
 
-A practical developer tool that converts ASCII folder trees into an interactive explorer and generates **ready-to-run project scaffolds**.
+Turn ASCII folder trees into working React + Node projects in seconds. **ready-to-run project scaffolds**.
 
 Paste a structure → visualize it → export a working project.
 
 ---
 
 ## Preview
-
-### Preview
 
 ![Preview](assets/preview.png)
 
@@ -237,7 +235,7 @@ You need:
 
 ```bash
 git clone https://github.com/Far-200/folder-structure-visualizer
-cd folder-structure-visualizer
+cd folder-structure-visualizer/frontend
 npm install
 npm run dev
 ```
@@ -280,6 +278,18 @@ This tool has been tested with:
 - Dynamic scaffold generator
 - Real working full-stack output
 - Practical developer tool (not just UI demo)
+
+---
+
+## Why This Exists
+
+I didn’t want to manually create 50 folders and 70 files for a project.
+
+So I built a tool to do it for me.
+
+Then I realized — if it solves my problem, it’ll probably help other developers too.
+
+So I turned it into this.
 
 ---
 
