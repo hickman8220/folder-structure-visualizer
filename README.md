@@ -202,7 +202,7 @@ You need:
 
 ---
 
-### 7 Module System Behavior (Advanced)
+### 7. Module System Behavior (Advanced)
 
 The generated project uses different module systems:
 
