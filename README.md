@@ -6,7 +6,7 @@
   </a>
 </p>
 
-Turn ASCII folder trees into working React + Node projects in seconds. **ready-to-run project scaffolds**.
+Turn ASCII folder trees into working React + Node projects in seconds — generating **ready-to-run project scaffolds**.
 
 Paste a structure → visualize it → export a working project.
 
