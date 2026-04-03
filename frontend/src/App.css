@@ -1166,3 +1166,41 @@
 .tree-row.tree-selected {
   box-shadow: inset 2px 0 0 #6366f1;
 }
+
+/* Some Fix */
+.links-block {
+  margin-top: 22px;
+}
+
+.links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.link-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  transition: 0.2s ease;
+}
+
+.link-pill:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+  color: #ffffff;
+}
+/* End of Some Fix */
+
+/* If backend not included, the pill */
+.status-chip {
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+/*End */

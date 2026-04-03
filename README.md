@@ -6,341 +6,283 @@
   </a>
 </p>
 
-**Folder Structure Visualizer** is a developer tool that converts ASCII folder trees into an interactive visual explorer and allows exporting the structure as a downloadable scaffold ZIP.
+A practical developer tool that converts ASCII folder trees into an interactive explorer and generates **ready-to-run project scaffolds**.
 
-Instead of manually creating dozens of folders and files when starting a project, you can paste a tree structure and generate the entire scaffold instantly.
-
----
-
-## ✨ Features
-
-- **📂 ASCII → Visual Tree**
-  Paste a standard ASCII folder tree and instantly visualize it.
-
-- **🌳 Collapsible Folder Explorer**
-  Expand or collapse folders like a real file explorer.
-  - **🔍 Smart Search & Highlight**
-    Instantly search files and folders by name.
-  - Highlights matching text in real-time
-  - Automatically expands relevant folders
-  - Filters out non-matching branches for clarity
-
-- **📊 File & Folder Counters**
-  Automatically counts total files and directories.
-  - **🎨 Intelligent File Icons**
-    Automatically assigns icons based on file types and names.
-  - Supports multiple languages (JS, TS, Python, Java, C/C++, etc.)
-  - Recognizes config files (`package.json`, `.env`, `vite.config`)
-  - Enhances readability like a real IDE file explorer
-
-- **📋 Copy Path**
-  Click any file or folder and copy its full path.
-
-- **📄 Copy Tree as Markdown**
-  Export the folder structure as Markdown.
-
-- **📦 Download Project Scaffold**
-  Generate and download a ZIP containing the entire folder structure.
-  - **⚛️ React + Vite Preset**
-    Instantly generate a ready-to-run React + Vite frontend scaffold.
-
-- **🎨 Tailwind CSS Preset**
-  Add Tailwind CSS configuration and generate a styled starter homepage.
-
-- **🟦 TypeScript (TSX) Preset**
-  Generate TSX-based React scaffolds with `App.tsx`, `main.tsx`, `vite.config.ts`, and TypeScript config files.
-
-- **🧩 Node + Express Preset**
-  Generate a backend starter with Express and a clean folder structure.
-
-- **🖥 Custom Starter Screens**
-  Generated React scaffolds include a branded startup homepage with setup instructions.
-
-- **⚠️ Vite 8 Node Warning**
-  Generated frontend scaffolds show a built-in Node.js version warning for Vite 8 compatibility.
-
-- **🚫 Smart Ignore Rules**
-  Automatically filters out generated folders like
-  `node_modules`, `dist`, `build`, `.next`, and `coverage`.
-
-- **🖱 Drag & Drop Input**
-  Drop ASCII trees directly into the editor.
-
-- **🧠 Flexible Parsing**
-  Supports both standard ASCII trees (├──, └──, │) and indentation-based structures.
-  Indentation is only valid under folders (lines ending with /).
-
-- **✨ Smooth UI Interactions**
-  - Animated folder expand/collapse
-  - Rotating chevrons for visual feedback
-  - Subtle hover and click effects for better UX
+Paste a structure → visualize it → export a working project.
 
 ---
 
-## 🖼 Preview
+## ✨ Core Features
 
-### 🧩 Full Interface
+### 📂 ASCII → Visual Tree
 
-<p align="center">
-  <img src="./assets/preview.png" width="900"/>
-</p>
+- Paste standard ASCII folder structures
+- Supports `├──`, `└──`, `│`, and indentation-based formats
 
----
+### 🌳 Interactive Explorer
 
-### 🔍 Smart Search & Highlight
+- Expand/collapse folders
+- Smooth animations
+- Clean IDE-like experience
 
-<p align="center">
-  <img src="./assets/search_feature.png" width="900"/>
-  <br/>
-  <img src="./assets/search_feature_2.png" width="900"/>
-</p>
+### 🔍 Smart Search
 
-- Real-time search filtering
+- Real-time filtering
 - Auto-expands matching folders
-- Highlights matched text for quick scanning
+- Highlights matches
+
+### 📊 Counters & Icons
+
+- File/folder counts
+- Intelligent file-type icons
+
+### 📋 Utilities
+
+- Copy full path
+- Export tree as Markdown
 
 ---
 
-### 🧠 Scaffold Presets & Placement
+## 📦 Scaffold Generator (Main Feature)
 
-<p align="center">
-  <img src="./assets/scaffold_presets.png" width="900"/>
-</p>
+Generate a **fully working project ZIP** directly from your structure.
 
-- Generate React, TSX, Tailwind, and Express setups
-- Choose custom folder placement dynamically
+### Supported Presets
+
+- React + Vite (JSX)
+- React + Vite + Tailwind
+- React + Vite + TypeScript (TSX)
+- React + Vite + TSX + Tailwind
+- Node + Express backend
+- Root `.gitignore`
+
+### What You Get
+
+- Frontend with working dev server
+- Backend with Express + `/api/status`
+- Vite proxy preconfigured
+- Clean starter UI
+
+Yes — it actually runs. Not fake files.
 
 ---
 
-### 📂 Example Usage
+## ⚠️ Important Behavior (Read This Once)
 
-<p align="center">
-  <img src="./assets/example_use.png" width="900"/>
-</p>
+### 1. Root vs Custom Placement
 
-- Paste ASCII tree → instantly visualize structure
-- Explore like a real file system
+You have two modes:
 
-### Input
+#### 🟢 Root Mode
 
-```text
-my-app/
-├── public/
-│   └── favicon.ico
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   └── Footer.jsx
-│   ├── pages/
-│   │   └── HomePage.jsx
-│   ├── App.jsx
-│   └── main.jsx
-├── package.json
-└── README.md
+Scaffold is created at root:
+
+```
+frontend/
+backend/
 ```
 
-### Result
+Run from:
 
-This becomes an **interactive visual tree** inside the UI.
-
----
-
-## 📦 Scaffold Export
-
-The **Download ZIP** feature creates a project scaffold where the ZIP file is automatically named after your **root folder**.
-
-> ⚠️ **Important**
-> All files are generated as **empty files**, allowing developers to start coding immediately without manually creating folders and files.
-
-> ⚠️ **Note**
-> The scaffold system may occasionally generate a few **extra folders or files** (e.g., `src/utils/`) that were **not explicitly defined** in the ASCII tree.
->
-> This happens because certain presets (React, Vite, Tailwind, etc.) include **framework-required or helper directories** to ensure the project runs out of the box.
->
-> These additions are **non-breaking** and safe to remove.  
-> If they are not needed for your project, feel free to **delete them ("yeet them")** without affecting functionality.
-
-> ⚠️ **Fixed**
-> An issue where Tailwind CSS imports TS by default even if the TypeScript checkbox was not checked.
-
-### Included Scaffold Presets
-
-The scaffold system can optionally generate starter files for:
-
-- **React + Vite**
-- **React + Vite + Tailwind CSS**
-- **React + Vite + TypeScript (TSX)**
-- **React + Vite + TypeScript (TSX) + Tailwind CSS**
-- **Node + Express API**
-- **Root `.gitignore`**
-
-These presets are merged into the parsed folder tree and exported as part of the ZIP.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-## 🛠 Tech Stack
+#### 🟡 Custom Placement Mode
 
-- **Framework:** React (Vite)
-- **Languages:** JavaScript, TypeScript
-- **Styling:** CSS, Tailwind CSS
-- **Backend Preset:** Node.js, Express
-- **Icons:** Lucide React & React Icons
-- **ZIP Generation:** JSZip
+Example:
+
+```
+Parent: WORK_PLEASE
+Target: apps
+```
+
+Output:
+
+```
+WORK_PLEASE/apps/frontend
+WORK_PLEASE/apps/backend
+```
+
+👉 You MUST run from THIS location:
+
+```bash
+cd WORK_PLEASE/apps/frontend
+npm install
+npm run dev
+```
+
+❌ Running from existing `apps/frontend` (from your input tree) will fail.
 
 ---
 
-## ⚛️ Generated Frontend Presets
+### 2. Placeholder Folder Conflicts
 
-When scaffold options are selected, the exported ZIP can generate frontend starter projects with:
+If your input already contains:
 
-### JSX Preset
+```
+apps/frontend
+apps/backend
+```
+
+Those are treated as **plain folders**, not scaffold apps.
+
+➡️ The tool generates NEW working apps in the selected destination.
+
+---
+
+### 3. Empty Config Handling
+
+Files like:
+
+```
+package.json
+vite.config.js
+```
+
+may be empty in your input tree.
+
+✔️ The tool replaces them with valid scaffold configs when presets are enabled.
+
+---
+
+### 4. Extra Folders May Appear
+
+Example:
+
+```
+src/utils/
+```
+
+These may be added by presets.
+
+✔️ Safe to delete
+✔️ Required for some setups
+
+(Translation: don’t panic, nothing is broken.)
+
+---
+
+### 5. Tailwind Behavior
+
+- With Tailwind → no `App.css`
+- Without Tailwind → standard CSS setup
+
+---
+
+### 6. Node Version Requirement
+
+Generated projects use **Vite 8**
+
+You need:
+
+- Node.js **20.19+** OR
+- Node.js **22.12+**
+
+---
+
+## ⚛️ Generated Frontend Structure
+
+### JSX Mode
 
 - `App.jsx`
 - `main.jsx`
 - `vite.config.js`
 
-### TSX Preset
+### TSX Mode
 
 - `App.tsx`
 - `main.tsx`
 - `vite.config.ts`
-- `vite-env.d.ts`
 - `tsconfig.json`
-- `tsconfig.app.json`
-- `tsconfig.node.json`
 
-### Tailwind Support
-
-When Tailwind is enabled, the scaffold also includes:
+### Tailwind Adds
 
 - `tailwind.config.js`
 - `postcss.config.js`
-
-  ### Styling Behavior
-
-The scaffold intelligently adapts styling based on selected options:
-
-- **With Tailwind CSS enabled**
-  - Uses utility-first styling
-  - Does NOT generate `App.css`
-  - Includes Tailwind config and directives in `index.css`
-
-- **Without Tailwind**
-  - Generates a standard `App.css`
-  - Uses traditional CSS styling
-
-This ensures clean, minimal, and relevant project output without unused files.
-
-### Vite 8 Compatibility Note
-
-Generated frontend starter pages include a visible warning that Vite 8 requires:
-
-- **Node.js 20.19+**, or
-- **Node.js 22.12+**
-
----
-
-## 🚀 Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/<your-username>/folder-structure-visualizer.git
-```
-
-Navigate into the project:
-
-```bash
-cd folder-structure-visualizer
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open in browser:
-
-```
-http://localhost:5173
-```
 
 ---
 
 ## 🧠 How It Works
 
-1. **Input** – User pastes an ASCII folder tree.
-2. **Parsing** – The parser converts the text into a nested JSON data structure.
-3. **Visualization** – The UI renders the structure as a collapsible file explorer.
-4. **Action** – The structure can then be:
-   - copied as Markdown
-   - explored visually
-   - exported as a ZIP scaffold (ignoring build artifacts)
+1. Parse ASCII → JSON tree
+2. Render interactive UI
+3. Merge presets into structure
+4. Generate ZIP using JSZip
 
 ---
 
-## ⚡ Performance Considerations
+## 🚀 Installation (Local Dev)
 
-The application is optimized for responsiveness and smooth interaction:
-
-- Efficient tree rendering using recursive components
-- Search operates with lightweight string matching (`includes`)
-- Only relevant branches are displayed during filtering
-- Minimal DOM updates ensure good performance even on mobile devices
-
-For extremely large folder trees, performance remains stable due to controlled rendering and state management.
+```bash
+git clone https://github.com/Far-200/folder-structure-visualizer
+cd folder-structure-visualizer
+npm install
+npm run dev
+```
 
 ---
+
+## 🧪 Testing Reality (Honest Section)
+
+This tool has been tested with:
+
+- Large monorepo-style trees
+- Nested folders (10+ levels)
+- JSX + TSX combinations
+- Tailwind on/off
+- Backend on/off
+- Root + custom placement
+
+---
+
+## ⚠️ Known Limitations
+
+- Parser is flexible, not strict — expects reasonable ASCII format
+- Custom placement can confuse users if they run wrong folders
+- Not designed for malformed or inconsistent tree syntax
+
+---
+
+## 🎯 Use Cases
+
+- Rapid project scaffolding
+- Visualizing large repos
+- Sharing architecture
+- Generating README trees
 
 ---
 
 ## 🏆 Highlights
 
-- Built a recursive tree rendering system from scratch
-- Designed a dynamic scaffold generator with conditional file creation
-- Implemented intelligent file-type recognition and icon mapping
-- Created a responsive and animated file explorer UI
-- Developed a real-world developer utility tool with practical use cases
-
-## 🎯 Use Cases
-
-- **Quick Scaffolding** – Set up new projects in seconds.
-- **Repo Visualization** – Understand complex repository structures instantly.
-- **Architecture Sharing** – Share project designs with teammates.
-- **Documentation** – Generate clean trees for README files.
-- **Preset-Based Project Bootstrapping** – Generate React, TSX, Tailwind, and Express starter structures instantly.
+- Built recursive tree renderer
+- Dynamic scaffold generator
+- Real working full-stack output
+- Practical developer tool (not just UI demo)
 
 ---
 
 ## 🔮 Future Improvements
 
-- [ ] README auto-generation for exported projects
-- [ ] Preset variants (Minimal / Standard / Production-ish)
-- [ ] Custom starter pages and branding options
-- [ ] Export GitHub-ready repository metadata
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
+- README generation for exported projects
+- More preset variations
+- Better placement UX hints
 
 ---
 
 ## 👨‍💻 Author
 
-**Farhaan Khan**
-Computer Science Engineering student passionate about building developer tools and learning through projects.
+Farhaan Khan
+CSE Student • Full-Stack Builder • AI Explorer
 
 ---
 
 ## ⭐ Support
 
-If you found this project useful, consider **starring the repository** to support development!
+If this helped you — star the repo.
+
+If it broke — open an issue 😄

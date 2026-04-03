@@ -1,4 +1,5 @@
 import { mergeTrees } from "./mergeTrees";
+
 function cloneTree(nodes) {
   return nodes.map((node) => ({
     ...node,
@@ -14,6 +15,102 @@ function pushIfMissing(parent, node) {
   if (!hasChildNamed(parent, node.name)) {
     parent.children.push(node);
   }
+}
+
+function isMeaningfullyEmptyContent(content) {
+  if (content === undefined || content === null) return true;
+  if (typeof content !== "string") return false;
+  return content.trim() === "";
+}
+
+function replaceEmptyFilePlaceholders(existingNodes = [], presetNodes = []) {
+  const presetMap = new Map(
+    presetNodes.map((node) => [`${node.type}:${node.name}`, node]),
+  );
+
+  return existingNodes.map((node) => {
+    const key = `${node.type}:${node.name}`;
+    const matchingPreset = presetMap.get(key);
+
+    if (
+      matchingPreset &&
+      node.type === "file" &&
+      matchingPreset.type === "file" &&
+      isMeaningfullyEmptyContent(node.content) &&
+      !isMeaningfullyEmptyContent(matchingPreset.content)
+    ) {
+      return { ...matchingPreset };
+    }
+
+    if (node.type === "folder" && matchingPreset?.type === "folder") {
+      return {
+        ...node,
+        children: replaceEmptyFilePlaceholders(
+          node.children || [],
+          matchingPreset.children || [],
+        ),
+      };
+    }
+
+    return node;
+  });
+}
+
+const EMPTY_CONFIG_FILE_DEFAULTS = {
+  "package.json": `{
+  "name": "app",
+  "private": true
+}`,
+  "package-lock.json": `{
+  "name": "app",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {}
+}`,
+  "tsconfig.json": `{}`,
+  "tsconfig.app.json": `{}`,
+  "tsconfig.node.json": `{}`,
+  ".eslintrc.json": `{}`,
+  ".prettierrc": `{}`,
+  ".prettierrc.json": `{}`,
+};
+
+function sanitizeEmptyConfigFiles(nodes = []) {
+  return nodes.map((node) => {
+    if (node.type === "folder") {
+      return {
+        ...node,
+        children: sanitizeEmptyConfigFiles(node.children || []),
+      };
+    }
+
+    if (node.type === "file" && EMPTY_CONFIG_FILE_DEFAULTS[node.name]) {
+      const contentIsEmpty = isMeaningfullyEmptyContent(node.content);
+
+      if (contentIsEmpty) {
+        return {
+          ...node,
+          content: EMPTY_CONFIG_FILE_DEFAULTS[node.name],
+        };
+      }
+    }
+
+    return node;
+  });
+}
+
+function getReactScaffoldTitle({
+  withTailwind,
+  withTypeScript,
+  withExpress = false,
+}) {
+  const parts = ["React", "Vite"];
+
+  if (withTailwind) parts.push("Tailwind");
+  if (withTypeScript) parts.push("TSX");
+  if (withExpress) parts.push("Express");
+
+  return `${parts.join(" + ")} scaffold ready`;
 }
 
 const reactWarningText =
@@ -153,6 +250,34 @@ function getReactAppCss() {
   line-height: 1.7;
 }
 
+.links-block {
+  margin-top: 22px;
+}
+
+.links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.link-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  transition: 0.2s ease;
+}
+
+.link-pill:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+  color: #ffffff;
+}
+
 code {
   background: rgba(255, 255, 255, 0.08);
   padding: 2px 8px;
@@ -219,20 +344,66 @@ ReactDOM.createRoot(document.getElementById("root")${
 );`;
 }
 
-function getConnectedReactAppFile({ withTailwind, withTypeScript }) {
-  if (withTailwind) {
-    if (withTypeScript) {
-      return `import { useEffect, useState } from "react";
+function getUniversalReactAppFile({
+  withTailwind,
+  withTypeScript,
+  withBackendConnection,
+}) {
+  const title = getReactScaffoldTitle({
+    withTailwind,
+    withTypeScript,
+    withExpress: withBackendConnection,
+  });
 
+  const appFileName = withTypeScript ? "src/App.tsx" : "src/App.jsx";
+  const importAppCssLine = withTailwind ? "" : `import "./App.css";\n`;
+
+  const officialLinksBlock = `
+const officialLinks = [
+  { label: "React Docs", href: "https://react.dev" },
+  { label: "Vite Docs", href: "https://vite.dev" },
+  { label: "React GitHub", href: "https://github.com/facebook/react" },
+  { label: "Vite GitHub", href: "https://github.com/vitejs/vite" },
+  { label: "React on X", href: "https://x.com/reactjs" },
+  { label: "Vite on X", href: "https://x.com/vite_js" },
+];
+`;
+
+  const stateBlock = withTypeScript
+    ? `
 type BackendState = {
-  ok: boolean;
-  message: string;
+  ok?: boolean;
+  message?: string;
 };
 
-export default function App() {
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-  const [message, setMessage] = useState("Checking backend connection...");
+function App() {
+  const [status, setStatus] = useState<"loading" | "success" | "error" | "idle">(
+    ${withBackendConnection ? `"loading"` : `"idle"`}
+  );
 
+  const [message, setMessage] = useState(
+    ${
+      withBackendConnection
+        ? `"Checking backend connection..."`
+        : `"This scaffold was generated without a backend preset."`
+    }
+  );
+`
+    : `
+function App() {
+  const [status, setStatus] = useState(${withBackendConnection ? `"loading"` : `"idle"`});
+
+  const [message, setMessage] = useState(
+    ${
+      withBackendConnection
+        ? `"Checking backend connection..."`
+        : `"This scaffold was generated without a backend preset."`
+    }
+  );
+`;
+
+  const effectBlock = withBackendConnection
+    ? `
   useEffect(() => {
     const checkBackend = async () => {
       try {
@@ -241,7 +412,7 @@ export default function App() {
           throw new Error("Backend health check failed");
         }
 
-        const data: BackendState = await response.json();
+        const data${withTypeScript ? ": BackendState" : ""} = await response.json();
         setStatus("success");
         setMessage(data.message || "Frontend and backend are connected.");
       } catch (error) {
@@ -254,117 +425,15 @@ export default function App() {
 
     checkBackend();
   }, []);
+`
+    : "";
 
-  return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_30%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.10),transparent_28%),linear-gradient(180deg,#020617_0%,#071127_100%)] px-6 py-10">
-        <div className="mx-auto grid min-h-[80vh] max-w-5xl place-items-center">
-          <section className="w-full rounded-3xl border border-slate-700/40 bg-slate-900/70 p-8 shadow-2xl backdrop-blur-xl md:p-10">
-            <span className="inline-flex rounded-full border border-indigo-400/25 bg-indigo-500/15 px-3 py-2 text-sm font-semibold text-indigo-200">
-              Generated by Folder Structure Visualizer
-            </span>
-
-            <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-white md:text-6xl">
-              React + Vite + Tailwind TSX + Express scaffold ready
-            </h1>
-
-            <p className="mt-4 max-w-3xl text-base leading-7 text-slate-400 md:text-lg">
-              Your frontend and backend starters were generated already wired together.
-              The frontend calls <code className="rounded bg-white/10 px-2 py-1 text-slate-100">/api/status</code>
-              through the Vite proxy.
-            </p>
-
-            <div className="mt-6 rounded-2xl border border-amber-400/25 bg-amber-500/10 p-4 text-amber-100">
-              <p className="text-sm font-extrabold tracking-wide text-amber-50">
-                Node.js requirement
-              </p>
-              <p className="mt-2 text-sm leading-6 text-amber-100/90">
-                ${reactWarningText}{" "}
-                <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                  npm install
-                </code>{" "}
-                in both apps, then run{" "}
-                <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                  npm run dev
-                </code>{" "}
-                in frontend and backend.
-              </p>
-            </div>
-
-            <div className="mt-8 rounded-2xl border border-slate-700/40 bg-white/5 p-5">
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300">
-                Connection status
-              </p>
-
-              <div
-                className={[
-                  "mt-4 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold",
-                  status === "loading"
-                    ? "border border-amber-400/30 bg-amber-500/15 text-amber-200"
-                    : status === "success"
-                    ? "border border-emerald-400/30 bg-emerald-500/15 text-emerald-200"
-                    : "border border-rose-400/30 bg-rose-500/15 text-rose-200",
-                ].join(" ")}
-              >
-                {status === "loading"
-                  ? "Checking backend..."
-                  : status === "success"
-                  ? "Backend connected"
-                  : "Backend not reachable"}
-              </div>
-
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
-                {message}
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-3">
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Frontend calls <code className="rounded bg-white/10 px-2 py-1">/api/status</code>
-              </div>
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Vite proxy forwards requests to <code className="rounded bg-white/10 px-2 py-1">http://localhost:5000</code>
-              </div>
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Start both apps and get straight to building
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-  );
-}`;
-    }
-
+  if (withTailwind) {
     return `import { useEffect, useState } from "react";
 
-export default function App() {
-  const [status, setStatus] = useState("loading");
-  const [message, setMessage] = useState("Checking backend connection...");
-
-  useEffect(() => {
-    const checkBackend = async () => {
-      try {
-        const response = await fetch("/api/status");
-        if (!response.ok) {
-          throw new Error("Backend health check failed");
-        }
-
-        const data = await response.json();
-        setStatus("success");
-        setMessage(data.message || "Frontend and backend are connected.");
-      } catch (error) {
-        setStatus("error");
-        setMessage(
-          "Frontend is running, but backend is not reachable yet. Start the backend and refresh."
-        );
-      }
-    };
-
-    checkBackend();
-  }, []);
-
+${officialLinksBlock}
+${stateBlock}
+${effectBlock}
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_30%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.10),transparent_28%),linear-gradient(180deg,#020617_0%,#071127_100%)] px-6 py-10">
@@ -375,13 +444,19 @@ export default function App() {
             </span>
 
             <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-white md:text-6xl">
-              React + Vite + Tailwind Express scaffold ready
+              ${title}
             </h1>
 
             <p className="mt-4 max-w-3xl text-base leading-7 text-slate-400 md:text-lg">
-              Your frontend and backend starters were generated already wired together.
-              The frontend calls <code className="rounded bg-white/10 px-2 py-1 text-slate-100">/api/status</code>
-              through the Vite proxy.
+              Your starter project is up and running. Start building from{" "}
+              <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
+                ${appFileName}
+              </code>
+              ${
+                withBackendConnection
+                  ? ` and use <code className="rounded bg-white/10 px-2 py-1 text-slate-100">/api/status</code> through the Vite proxy.`
+                  : "."
+              }
             </p>
 
             <div className="mt-6 rounded-2xl border border-amber-400/25 bg-amber-500/10 p-4 text-amber-100">
@@ -389,21 +464,13 @@ export default function App() {
                 Node.js requirement
               </p>
               <p className="mt-2 text-sm leading-6 text-amber-100/90">
-                ${reactWarningText}{" "}
-                <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                  npm install
-                </code>{" "}
-                in both apps, then run{" "}
-                <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                  npm run dev
-                </code>{" "}
-                in frontend and backend.
+                ${reactWarningText}
               </p>
             </div>
 
             <div className="mt-8 rounded-2xl border border-slate-700/40 bg-white/5 p-5">
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300">
-                Connection status
+                Backend status
               </p>
 
               <div
@@ -413,6 +480,8 @@ export default function App() {
                     ? "border border-amber-400/30 bg-amber-500/15 text-amber-200"
                     : status === "success"
                     ? "border border-emerald-400/30 bg-emerald-500/15 text-emerald-200"
+                    : status === "idle"
+                    ? "border border-slate-500/30 bg-slate-500/15 text-slate-200"
                     : "border border-rose-400/30 bg-rose-500/15 text-rose-200",
                 ].join(" ")}
               >
@@ -420,6 +489,8 @@ export default function App() {
                   ? "Checking backend..."
                   : status === "success"
                   ? "Backend connected"
+                  : status === "idle"
+                  ? "Backend not included"
                   : "Backend not reachable"}
               </div>
 
@@ -428,15 +499,23 @@ export default function App() {
               </p>
             </div>
 
-            <div className="mt-8 grid gap-3">
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Frontend calls <code className="rounded bg-white/10 px-2 py-1">/api/status</code>
-              </div>
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Vite proxy forwards requests to <code className="rounded bg-white/10 px-2 py-1">http://localhost:5000</code>
-              </div>
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Start both apps and get straight to building
+            <div className="mt-8">
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300">
+                Official links
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                {officialLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full border border-slate-700/50 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-indigo-400/40 hover:bg-indigo-500/10 hover:text-white"
+                  >
+                    {link.label}
+                  </a>
+                ))}
               </div>
             </div>
           </section>
@@ -444,63 +523,36 @@ export default function App() {
       </div>
     </main>
   );
-}`;
+}
+
+export default App;`;
   }
 
-  return `import { useEffect, useState } from "react";
-import "./App.css";
+  return `${importAppCssLine}import { useEffect, useState } from "react";
 
-function App() {
-  const [status, setStatus] = useState("loading");
-  const [message, setMessage] = useState("Checking backend connection...");
-
-  useEffect(() => {
-    const checkBackend = async () => {
-      try {
-        const response = await fetch("/api/status");
-        if (!response.ok) {
-          throw new Error("Backend health check failed");
-        }
-
-        const data = await response.json();
-        setStatus("success");
-        setMessage(data.message || "Frontend and backend are connected.");
-      } catch (error) {
-        setStatus("error");
-        setMessage(
-          "Frontend is running, but backend is not reachable yet. Start the backend and refresh."
-        );
-      }
-    };
-
-    checkBackend();
-  }, []);
-
+${officialLinksBlock}
+${stateBlock}
+${effectBlock}
   return (
     <div className="app-shell">
       <div className="hero-card">
         <span className="badge">Generated by Folder Structure Visualizer</span>
 
-        <h1 className="hero-title">
-          React + Vite ${withTypeScript ? "TSX + " : ""}Express scaffold ready
-        </h1>
+        <h1 className="hero-title">${title}</h1>
 
         <p className="subtitle">
-          Your frontend and backend starters were generated already wired
-          together. The frontend calls <code>/api/status</code> through the
-          Vite proxy.
+          Your starter project is up and running. Start building from{" "}
+          <code>${appFileName}</code>
+          ${withBackendConnection ? ` and use <code>/api/status</code> through the Vite proxy.` : "."}
         </p>
 
         <div className="warning-box">
           <p className="warning-title">Node.js requirement</p>
-          <p className="warning-text">
-            ${reactWarningText} Run <code>npm install</code> in both apps, then
-            run <code>npm run dev</code> in frontend and backend.
-          </p>
+          <p className="warning-text">${reactWarningText}</p>
         </div>
 
         <div className="status-card">
-          <p className="status-label">Connection status</p>
+          <p className="status-label">Backend status</p>
 
           <div
             className={
@@ -508,6 +560,8 @@ function App() {
                 ? "status-chip loading"
                 : status === "success"
                 ? "status-chip success"
+                : status === "idle"
+                ? "status-chip"
                 : "status-chip error"
             }
           >
@@ -515,21 +569,29 @@ function App() {
               ? "Checking backend..."
               : status === "success"
               ? "Backend connected"
+              : status === "idle"
+              ? "Backend not included"
               : "Backend not reachable"}
           </div>
 
           <p className="status-text">{message}</p>
         </div>
 
-        <div className="steps">
-          <div className="step">
-            Frontend calls <code>/api/status</code>
-          </div>
-          <div className="step">
-            Vite proxy forwards requests to <code>http://localhost:5000</code>
-          </div>
-          <div className="step">
-            Start both apps and get straight to building
+        <div className="links-block">
+          <p className="status-label">Official links</p>
+
+          <div className="links-row">
+            {officialLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                className="link-pill"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -545,165 +607,11 @@ function getReactAppFile({
   withTypeScript,
   withBackendConnection,
 }) {
-  const appFileName = withTypeScript ? "src/App.tsx" : "src/App.jsx";
-
-  if (withBackendConnection) {
-    return getConnectedReactAppFile({ withTailwind, withTypeScript });
-  }
-
-  if (withTailwind) {
-    return `export default function App() {
-  return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_30%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.10),transparent_28%),linear-gradient(180deg,#020617_0%,#071127_100%)] px-6 py-10">
-        <div className="mx-auto grid min-h-[80vh] max-w-4xl place-items-center">
-          <section className="w-full rounded-3xl border border-slate-700/40 bg-slate-900/70 p-8 shadow-2xl backdrop-blur-xl md:p-10">
-            <span className="inline-flex rounded-full border border-indigo-400/25 bg-indigo-500/15 px-3 py-2 text-sm font-semibold text-indigo-200">
-              Generated by Folder Structure Visualizer
-            </span>
-
-            <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-white md:text-6xl">
-              React + Vite + Tailwind ${withTypeScript ? "TSX " : ""}scaffold ready
-            </h1>
-
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-              Your frontend starter has been generated successfully. Start
-              building from{" "}
-              <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                ${appFileName}
-              </code>
-            </p>
-
-            <div className="mt-6 rounded-2xl border border-amber-400/25 bg-amber-500/10 p-4 text-amber-100">
-              <p className="text-sm font-extrabold tracking-wide text-amber-50">
-                Node.js requirement
-              </p>
-              <p className="mt-2 text-sm leading-6 text-amber-100/90">
-                ${reactWarningText}{" "}
-                <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                  npm install
-                </code>{" "}
-                and{" "}
-                <code className="rounded bg-white/10 px-2 py-1 text-slate-100">
-                  npm run dev
-                </code>.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-3">
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Edit{" "}
-                <code className="rounded bg-white/10 px-2 py-1">
-                  ${appFileName}
-                </code>
-              </div>
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Create components in{" "}
-                <code className="rounded bg-white/10 px-2 py-1">
-                  src/components
-                </code>
-              </div>
-              <div className="rounded-2xl border border-slate-700/40 bg-white/5 p-4 text-slate-200">
-                Run{" "}
-                <code className="rounded bg-white/10 px-2 py-1">
-                  npm install
-                </code>{" "}
-                and{" "}
-                <code className="rounded bg-white/10 px-2 py-1">
-                  npm run dev
-                </code>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-  );
-}`;
-  }
-
-  if (withTypeScript) {
-    return `import "./App.css";
-
-function App() {
-  return (
-    <div className="app-shell">
-      <div className="hero-card">
-        <span className="badge">Generated by Folder Structure Visualizer</span>
-
-        <h1 className="hero-title">React + Vite TSX scaffold ready</h1>
-
-        <p className="subtitle">
-          Your frontend starter has been generated successfully. Start building
-          from <code>${appFileName}</code>.
-        </p>
-
-        <div className="warning-box">
-          <p className="warning-title">Node.js requirement</p>
-          <p className="warning-text">
-            ${reactWarningText} <code>npm install</code> and <code>npm run dev</code>.
-          </p>
-        </div>
-
-        <div className="steps">
-          <div className="step">
-            Edit <code>${appFileName}</code>
-          </div>
-          <div className="step">
-            Create components in <code>src/components</code>
-          </div>
-          <div className="step">
-            Run <code>npm install</code> and <code>npm run dev</code>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default App;
-`;
-  }
-
-  return `import "./App.css";
-
-function App() {
-  return (
-    <div className="app-shell">
-      <div className="hero-card">
-        <span className="badge">Generated by Folder Structure Visualizer</span>
-
-        <h1 className="hero-title">React + Vite scaffold ready</h1>
-
-        <p className="subtitle">
-          Your frontend starter has been generated successfully. Start building
-          from <code>${appFileName}</code>.
-        </p>
-
-        <div className="warning-box">
-          <p className="warning-title">Node.js requirement</p>
-          <p className="warning-text">
-            ${reactWarningText} <code>npm install</code> and <code>npm run dev</code>.
-          </p>
-        </div>
-
-        <div className="steps">
-          <div className="step">
-            Edit <code>${appFileName}</code>
-          </div>
-          <div className="step">
-            Create components in <code>src/components</code>
-          </div>
-          <div className="step">
-            Run <code>npm install</code> and <code>npm run dev</code>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default App;`;
+  return getUniversalReactAppFile({
+    withTailwind,
+    withTypeScript,
+    withBackendConnection,
+  });
 }
 
 function getViteConfigFile(withTypeScript, withBackendConnection) {
@@ -1286,12 +1194,17 @@ export function applyScaffoldPresets(
   }
 
   if (presetNodes.length > 0) {
-    targetParent.children = mergeTrees(targetParent.children, presetNodes);
+    const cleanedChildren = replaceEmptyFilePlaceholders(
+      targetParent.children,
+      presetNodes,
+    );
+
+    targetParent.children = mergeTrees(cleanedChildren, presetNodes);
   }
 
   if (options.gitignore) {
     pushIfMissing(root, createGitignoreFile());
   }
 
-  return clonedTree;
+  return sanitizeEmptyConfigFiles(clonedTree);
 }

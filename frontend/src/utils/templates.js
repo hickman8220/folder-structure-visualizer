@@ -1,3 +1,5 @@
+// Reserved for future
+// This file defines the folder and file structure templates for different frontend and backend setups.
 function fileNode(name, content = "") {
   return {
     name,
