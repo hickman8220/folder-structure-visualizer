@@ -14,18 +14,14 @@ Paste a structure → visualize it → export a working project.
 
 ## Preview
 
-### Main Interface
+### Working
 
-![Preview](assets/preview.png)
+![Example Use](assets/Demo.gif)
 
 ### Search Features
 
 ![Search](assets/search_feature.png)
 ![Search](assets/search_feature_2.png)
-
-### Example Uses
-
-![Example](assets/example_use.png)
 
 ---
 
